@@ -1,21 +1,15 @@
-# AdventOfCode2023
+# Advent Of Code 2023
 
-**TODO: Add description**
+[Advent of Code](https://adventofcode.com/) 2023 solutions completed in Elixir.
 
-## Installation
+## Running
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `advent_of_code_2023` to your list of dependencies in `mix.exs`:
+You can execute the solution for the given day like so:
 
-```elixir
-def deps do
-  [
-    {:advent_of_code_2023, "~> 0.1.0"}
-  ]
-end
+```
+mix day01
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/advent_of_code_2023>.
+## Testing
 
+The tests for each module can be run with `mix test`
