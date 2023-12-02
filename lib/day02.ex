@@ -56,7 +56,43 @@ defmodule Day02.Part1 do
 end
 
 defmodule Day02.Part2 do
-  def solve(_input) do
+  def solve(input) do
+    input
+    |> String.split("\n", trim: true)
+    |> Enum.map(&parse_game/1)
+    |> Enum.map(&determine_power/1)
+    |> Enum.sum()
+  end
+
+  defp parse_game(line) do
+    [game, rounds] = String.split(line, ":", trim: true)
+
+    id =
+      ~r/(\d+)/
+      |> Regex.scan(game)
+      |> Enum.map(fn [_, game_id] -> String.to_integer(game_id) end)
+
+    parsed_rounds =
+      rounds
+      |> String.split(";", trim: true)
+      |> Enum.map(fn round -> String.split(round, ",") end)
+      |> Enum.map(fn round ->
+        Enum.map(round, fn card ->
+          [count, color] = String.split(card, " ", trim: true)
+          %{count: String.to_integer(count), color: color}
+        end)
+      end)
+      |> List.flatten()
+      |> Enum.sort_by(fn x -> x.count end, :desc)
+      |> Enum.group_by(fn x -> x.color end)
+
+    %{id: hd(id), rounds: parsed_rounds}
+  end
+
+  defp determine_power(%{
+         rounds: %{"blue" => [top_blue | _], "red" => [top_red | _], "green" => [top_green | _]}
+       }) do
+    top_blue.count * top_red.count * top_green.count
   end
 end
 

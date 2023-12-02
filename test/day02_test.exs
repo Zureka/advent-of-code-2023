@@ -9,13 +9,11 @@ defmodule Day02Test do
   Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
   """
 
-  @tag :skip
   test "solves example input for part 1" do
     assert Day02.Part1.solve(@example_input) == 8
   end
 
-  @tag :skip
   test "solves example input for part 2" do
-    assert Day02.Part2.solve(@example_input) == 42
+    assert Day02.Part2.solve(@example_input) == 2286
   end
 end
