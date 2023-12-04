@@ -123,8 +123,34 @@ defmodule Day03Test do
     assert Day03.Part1.solve(input) == 62
   end
 
-  @tag :skip
   test "solves example input for part 2" do
-    assert Day03.Part2.solve(@example_input) == 42
+    assert Day03.Part2.solve(@example_input) == 467_835
+  end
+
+  test "part 2 - alternate example 1" do
+    input = """
+    ...5*10...
+    """
+
+    assert Day03.Part2.solve(input) == 50
+  end
+
+  test "part 2 - alternate example 2" do
+    input = """
+    .......5......
+    ..7*..*.....4*
+    ...*13*......9
+    .......15.....
+    ..............
+    ..............
+    ..............
+    ..............
+    ..............
+    ..............
+    21............
+    ...*9.........
+    """
+
+    assert Day03.Part2.solve(input) == 478
   end
 end
