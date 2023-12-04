@@ -34,7 +34,9 @@ defmodule Day04.Part1 do
 end
 
 defmodule Day04.Part2 do
-  def solve(_input) do
+  def solve(input) do
+    input
+    |> String.split("\n", trim: true)
   end
 end
 
