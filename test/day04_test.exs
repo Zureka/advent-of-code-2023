@@ -16,6 +16,6 @@ defmodule Day04Test do
 
   @tag :skip
   test "solves example input for part 2" do
-    assert Day04.Part2.solve(@example_input) == 42
+    assert Day04.Part2.solve(@example_input) == 30
   end
 end
