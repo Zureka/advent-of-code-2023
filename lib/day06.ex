@@ -25,7 +25,20 @@ defmodule Day06.Part1 do
 end
 
 defmodule Day06.Part2 do
-  def solve(_input) do
+  def solve(input) do
+    [time, distance] =
+      input
+      |> String.split("\n", trim: true)
+      |> Enum.map(fn line ->
+        [_label | values] = String.split(line, ~r/\s+/, trim: true)
+        values |> Enum.join("") |> String.to_integer()
+      end)
+
+    1..time
+    |> Enum.reduce(0, fn hold_time, acc ->
+      dist = hold_time * (time - hold_time)
+      if dist > distance, do: acc + 1, else: acc
+    end)
   end
 end
 
