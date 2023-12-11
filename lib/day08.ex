@@ -1,47 +1,63 @@
 defmodule Day08.Part1 do
   def solve(input) do
-    [instructions, nodes] =
-      input
-      |> String.split("\n\n", trim: true)
+    {instructions, nodes} = parse(input)
+    follow(nodes, instructions, [], "AAA", 0)
+  end
 
-    instructions = String.split(instructions, "", trim: true)
+  def follow(_nodes, _instructions, _inst, "ZZZ", count), do: count
 
-    instructions =
-      1..100
-      |> Enum.map(fn _ -> instructions end)
-      |> List.flatten()
+  def follow(nodes, instructions, [], key, count),
+    do: follow(nodes, instructions, instructions, key, count)
+
+  def follow(nodes, instructions, ["L" | rest], key, count) do
+    {left, _} = nodes[key]
+    follow(nodes, instructions, rest, left, count + 1)
+  end
+
+  def follow(nodes, instructions, ["R" | rest], key, count) do
+    {_, right} = nodes[key]
+    follow(nodes, instructions, rest, right, count + 1)
+  end
+
+  def parse(input) do
+    [instructions, rest] = String.split(input, "\n\n", trim: true)
 
     nodes =
-      nodes
-      |> String.split("\n", trim: true)
-      |> Enum.with_index()
-      |> Enum.reduce(%{}, fn {line, index}, acc ->
-        [key, left, right] =
-          ~r/[A-Z]{3}/
-          |> Regex.scan(line)
-          |> List.flatten()
+      Regex.scan(~r/(.{3}) = \((.{3}), (.{3})\)/, rest, capture: :all_but_first)
+      |> Enum.map(fn [k, l, r] -> {k, {l, r}} end)
+      |> Enum.into(%{})
 
-        Map.put(acc, key, %{left: left, right: right, index: index})
-      end)
-
-    instructions
-    |> Enum.reduce_while({"AAA", 0}, fn step, {node, count} ->
-      if node == "ZZZ" do
-        {:halt, {node, count}}
-      else
-        %{left: left, right: right} = Map.get(nodes, node)
-
-        case step do
-          "L" -> {:cont, {left, count + 1}}
-          "R" -> {:cont, {right, count + 1}}
-        end
-      end
-    end)
+    {String.codepoints(instructions), nodes}
   end
 end
 
 defmodule Day08.Part2 do
-  def solve(_input) do
+  def solve(input) do
+    {instructions, nodes} = Day08.Part1.parse(input)
+
+    Map.keys(nodes)
+    |> Enum.filter(&String.ends_with?(&1, "A"))
+    |> Enum.map(&follow(nodes, instructions, [], &1, 0))
+    |> Enum.reduce(fn x, y -> div(x * y, Integer.gcd(x, y)) end)
+  end
+
+  defp follow(nodes, instructions, [], key, count),
+    do: follow(nodes, instructions, instructions, key, count)
+
+  defp follow(nodes, instructions, [direction | rest], key, count) do
+    index =
+      case direction do
+        "L" -> 0
+        "R" -> 1
+      end
+
+    key = elem(nodes[key], index)
+
+    if String.ends_with?(key, "Z") do
+      count + 1
+    else
+      follow(nodes, instructions, rest, key, count + 1)
+    end
   end
 end
 
