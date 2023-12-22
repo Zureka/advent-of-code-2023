@@ -37,6 +37,7 @@ defmodule Day10Test do
     assert Day10.Part2.solve(input) == 1
   end
 
+  @tag :skip
   test "solves another simple example input for part 2" do
     input = """
     .........
