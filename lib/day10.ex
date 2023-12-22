@@ -95,7 +95,7 @@ defmodule Day10.Part2 do
         end)
         |> Enum.reduce(0, fn t, acc ->
           case {Enum.member?(pipes, t), elem(t, 0)} do
-            {true, "S"} -> acc + 1
+            # {true, "S"} -> acc + 1
             {true, "|"} -> acc + 1
             {true, "L"} -> acc + 1
             {true, "J"} -> acc + 1
